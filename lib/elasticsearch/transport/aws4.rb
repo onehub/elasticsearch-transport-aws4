@@ -21,12 +21,18 @@ module Elasticsearch
       def initialize(arguments = {}, &_block)
         super arguments
 
+        session_token_service = Aws::STS::Client.new(access_key_id: arguments[:options][:aws4][:key],
+                                                      secret_access_key: arguments[:options][:aws4][:secret])
+        session = session_token_service.get_session_token
+
         @signer = Aws::Sigv4::Signer.new(
           access_key_id: arguments[:options][:aws4][:key],
           secret_access_key: arguments[:options][:aws4][:secret],
           service: 'es',
-          region: arguments[:options][:aws4][:region]
+          region: arguments[:options][:aws4][:region],
+          session_token: session.credentials[:session_token]
         )
+
       end
 
       def perform_request(method, path, params = {}, body = nil, headers=nil)
