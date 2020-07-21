@@ -25,6 +25,10 @@ module Elasticsearch
                                                       secret_access_key: arguments[:options][:aws4][:secret])
         session = session_token_service.get_session_token
 
+        Rails.logger.info('*'*100)
+        Rails.logger.info("session token #{session.credentials[:session_token]}")
+
+
         @signer = Aws::Sigv4::Signer.new(
           access_key_id: arguments[:options][:aws4][:key],
           secret_access_key: arguments[:options][:aws4][:secret],
@@ -44,8 +48,12 @@ module Elasticsearch
             signature = @signer.sign_request(
               url: url, http_method: request.method, headers: request.headers, body: request.body
             )
-
-            HEADERS.each { |header| request.headers[header] = signature.headers[header] || '' }
+            Rails.logger.info('*'*100)
+            Rails.logger.info(signature.inspect)
+            HEADERS.each do |header|
+              Rails.logger.info("#{header} = #{signature.headers[header]}")
+              request.headers[header] = signature.headers[header] || ''
+            end
           end
         end
       end
