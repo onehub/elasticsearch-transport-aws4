@@ -52,12 +52,13 @@ module Elasticsearch
             signature = @signer.sign_request(
               url: url, http_method: request.method, headers: request.headers, body: request.body
             )
-            Rails.logger.info('*'*100)
-            Rails.logger.info(signature.inspect)
+            # Rails.logger.info('*'*100)
+            # Rails.logger.info(signature.inspect)
             HEADERS.each do |header|
-              Rails.logger.info("#{header} = #{signature.headers[header]}")
+              # Rails.logger.info("#{header} = #{signature.headers[header]}")
               request.headers[header] = signature.headers[header] || ''
             end
+            binding.pry
           end
         end
       end
