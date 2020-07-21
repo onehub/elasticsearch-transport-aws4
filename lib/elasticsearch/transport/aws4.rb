@@ -26,6 +26,7 @@ module Elasticsearch
         session = session_token_service.get_session_token
 
         Rails.logger.info('*'*100)
+        Rails.logger.info(arguments)
         Rails.logger.info("session token #{session.credentials[:session_token]}")
 
 
@@ -42,6 +43,9 @@ module Elasticsearch
       def perform_request(method, path, params = {}, body = nil, headers=nil)
         Elasticsearch::Transport::Transport::Base.instance_method(:perform_request)
           .bind(self).call(method, path, params, body) do |connection, url|
+            Rails.logger.info('!'*100)
+            Rails.logger.info("url = #{url}")
+
           connection.connection.run_request(
             method.downcase.to_sym, url, (body ? __convert_to_json(body) : ''), {}
           ) do |request|
