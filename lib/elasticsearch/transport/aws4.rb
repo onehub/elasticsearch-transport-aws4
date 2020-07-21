@@ -25,19 +25,19 @@ module Elasticsearch
                                                       secret_access_key: arguments[:options][:aws4][:secret])
         session = session_token_service.get_session_token
 
-        Rails.logger.info('*'*100)
-        Rails.logger.info(arguments)
-        Rails.logger.info("session token #{session.credentials[:session_token]}")
-
-
+        # @signer = Aws::Sigv4::Signer.new(
+        #   access_key_id: session.credentials[:access_key_id],
+        #   secret_access_key: session.credentials[:secret_access_key],
+        #   service: 'es',
+        #   region: arguments[:options][:aws4][:region],
+        #   session_token: session.credentials[:session_token]
+        # )
         @signer = Aws::Sigv4::Signer.new(
-          access_key_id: session.credentials[:access_key_id],
-          secret_access_key: session.credentials[:secret_access_key],
+          access_key_id: arguments[:options][:aws4][:key],
+          secret_access_key: arguments[:options][:aws4][:secret],
           service: 'es',
-          region: arguments[:options][:aws4][:region],
-          session_token: session.credentials[:session_token]
+          region: arguments[:options][:aws4][:region]
         )
-
       end
 
       def perform_request(method, path, params = {}, body = nil, headers=nil)
