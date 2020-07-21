@@ -29,7 +29,7 @@ module Elasticsearch
         )
       end
 
-      def perform_request(method, path, params = {}, body = nil)
+      def perform_request(method, path, params = {}, body = nil, headers=nil)
         Elasticsearch::Transport::Transport::Base.instance_method(:perform_request)
           .bind(self).call(method, path, params, body) do |connection, url|
           connection.connection.run_request(
