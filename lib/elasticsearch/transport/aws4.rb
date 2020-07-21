@@ -43,22 +43,13 @@ module Elasticsearch
       def perform_request(method, path, params = {}, body = nil, headers=nil)
         Elasticsearch::Transport::Transport::Base.instance_method(:perform_request)
           .bind(self).call(method, path, params, body) do |connection, url|
-            Rails.logger.info('!'*100)
-            Rails.logger.info("url = #{url}")
-
           connection.connection.run_request(
             method.downcase.to_sym, url, (body ? __convert_to_json(body) : ''), {}
           ) do |request|
             signature = @signer.sign_request(
               url: url, http_method: request.method, headers: request.headers, body: request.body
             )
-            # Rails.logger.info('*'*100)
-            # Rails.logger.info(signature.inspect)
-            HEADERS.each do |header|
-              # Rails.logger.info("#{header} = #{signature.headers[header]}")
-              request.headers[header] = signature.headers[header] || ''
-            end
-            binding.pry
+            HEADERS.each { |header| request.headers[header] = signature.headers[header] || '' }
           end
         end
       end
