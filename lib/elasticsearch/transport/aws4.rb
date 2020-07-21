@@ -31,8 +31,8 @@ module Elasticsearch
 
 
         @signer = Aws::Sigv4::Signer.new(
-          access_key_id: arguments[:options][:aws4][:key],
-          secret_access_key: arguments[:options][:aws4][:secret],
+          access_key_id: session.credentials[:access_key_id],
+          secret_access_key: session.credentials[:secret_access_key],
           service: 'es',
           region: arguments[:options][:aws4][:region],
           session_token: session.credentials[:session_token]
