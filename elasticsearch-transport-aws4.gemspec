@@ -5,7 +5,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'elasticsearch-transport-aws4'
-  spec.version       = '2.0.0'
+  spec.version       = '7.4.0'
   spec.authors       = ['Filip Tepper']
   spec.email         = ['filip@tepper.pl']
 
