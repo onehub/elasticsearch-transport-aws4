@@ -28,6 +28,7 @@ Create Elasticsearch client with `transport_class` and `aws4` options.
 Elasticsearch::Client.new(
   url:             "https://search-XYZ-ABCDEFGHIJKLMMNOPQRTUVWXYZ.us-east-1.es.amazonaws.com",
   transport_class: Elasticsearch::Transport::AWS4,
+  port: 443,
   aws4: {
     key:    "KEY_KEY_KEY_KEY",
     secret: "SECRET_SECRET",
