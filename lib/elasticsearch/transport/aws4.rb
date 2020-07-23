@@ -43,6 +43,7 @@ module Elasticsearch
             signature = @signer.sign_request(
               url: url, http_method: request.method, headers: request.headers, body: request.body
             )
+
             HEADERS.each { |header| request.headers[header] = signature.headers[header] || '' }
           end
         end
